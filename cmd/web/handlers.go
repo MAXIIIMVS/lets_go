@@ -2,12 +2,32 @@ package main
 
 import (
 	"fmt"
+	"html/template"
+	"log"
 	"net/http"
 	"strconv"
 )
 
 func home(w http.ResponseWriter, _ *http.Request) {
-	w.Write([]byte("Hello from snippetbox"))
+	ts, err := template.ParseFiles("./ui/html/pages/home.gohtml")
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(
+			w,
+			http.StatusText(http.StatusInternalServerError),
+			http.StatusInternalServerError,
+		)
+		return
+	}
+	err = ts.Execute(w, nil)
+	if err != nil {
+		log.Println(err.Error())
+		http.Error(
+			w,
+			http.StatusText(http.StatusInternalServerError),
+			http.StatusInternalServerError,
+		)
+	}
 }
 
 func snippetView(w http.ResponseWriter, r *http.Request) {
