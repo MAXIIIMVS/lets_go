@@ -33,6 +33,14 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Display a specific snippet with ID %d\n", id)
 }
 
-func (app *application) snippetCreate(w http.ResponseWriter, _ *http.Request) {
-	w.Write([]byte("Create a new snippet..."))
+func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
+	title := "Dummy title"
+	content := "Dummy content"
+	expires := 7
+	id, err := app.snippets.Insert(title, content, expires)
+	if err != nil {
+		app.serverError(w, err)
+		return
+	}
+	http.Redirect(w, r, fmt.Sprintf("/snippet/view?id=%d", id), http.StatusSeeOther)
 }
