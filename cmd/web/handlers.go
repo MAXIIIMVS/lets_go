@@ -11,6 +11,7 @@ import (
 func home(w http.ResponseWriter, _ *http.Request) {
 	files := []string{
 		"./ui/html/pages/base.tmpl",
+		"./ui/html/partials/nav.tmpl",
 		"./ui/html/pages/home.tmpl",
 	}
 	ts, err := template.ParseFiles(files...)
