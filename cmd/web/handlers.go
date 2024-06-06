@@ -3,12 +3,11 @@ package main
 import (
 	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 	"strconv"
 )
 
-func home(w http.ResponseWriter, _ *http.Request) {
+func (app *application) home(w http.ResponseWriter, _ *http.Request) {
 	files := []string{
 		"./ui/html/pages/base.tmpl",
 		"./ui/html/partials/nav.tmpl",
@@ -16,7 +15,7 @@ func home(w http.ResponseWriter, _ *http.Request) {
 	}
 	ts, err := template.ParseFiles(files...)
 	if err != nil {
-		log.Println(err.Error())
+		app.errorLog.Print(err.Error())
 		http.Error(
 			w,
 			http.StatusText(http.StatusInternalServerError),
@@ -26,7 +25,7 @@ func home(w http.ResponseWriter, _ *http.Request) {
 	}
 	err = ts.ExecuteTemplate(w, "base", nil)
 	if err != nil {
-		log.Println(err.Error())
+		app.errorLog.Print(err.Error())
 		http.Error(
 			w,
 			http.StatusText(http.StatusInternalServerError),
@@ -35,7 +34,7 @@ func home(w http.ResponseWriter, _ *http.Request) {
 	}
 }
 
-func snippetView(w http.ResponseWriter, r *http.Request) {
+func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil || id < 1 {
 		http.NotFound(w, r)
@@ -44,6 +43,6 @@ func snippetView(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, "Display a specific snippet with ID %d\n", id)
 }
 
-func snippetCreate(w http.ResponseWriter, _ *http.Request) {
+func (app *application) snippetCreate(w http.ResponseWriter, _ *http.Request) {
 	w.Write([]byte("Create a new snippet..."))
 }
