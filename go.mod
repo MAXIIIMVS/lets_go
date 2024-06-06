@@ -1,4 +1,4 @@
-module github.com/eXvimmer
+module github.com/eXvimmer/lets_go
 
 go 1.22.1
 
