@@ -21,12 +21,17 @@ func (app *application) home(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
-	id, err := strconv.Atoi(r.URL.Query().Get("id"))
-	if err != nil || id < 1 {
+	id := r.PathValue("id")
+	if id == "" {
 		app.notFound(w)
 		return
 	}
-	snippet, err := app.snippets.Get(id)
+	idValue, err := strconv.Atoi(id)
+	if err != nil || idValue < 1 {
+		app.notFound(w)
+		return
+	}
+	snippet, err := app.snippets.Get(idValue)
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
 			app.notFound(w)
@@ -40,7 +45,13 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	app.render(w, http.StatusOK, "view.tmpl", data)
 }
 
-func (app *application) snippetCreate(w http.ResponseWriter, r *http.Request) {
+func (app *application) snippetCreate(w http.ResponseWriter, _ *http.Request) {
+	// TODO: FIX: this
+	w.Write([]byte("Display the form for creating a new snippet"))
+}
+
+func (app *application) snippetCreatePost(w http.ResponseWriter, r *http.Request) {
+	// TODO: FIX: this
 	title := "Dummy title"
 	content := "Dummy content"
 	expires := 7
