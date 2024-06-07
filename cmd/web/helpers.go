@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"net/http"
 	"runtime/debug"
+	"time"
 )
 
 func (app *application) serverError(w http.ResponseWriter, err error) {
@@ -44,4 +45,10 @@ func (app *application) render(
 	}
 	w.WriteHeader(status)
 	buf.WriteTo(w)
+}
+
+func (app *application) newTemplateData(_ *http.Request) *templateData {
+	return &templateData{
+		CurrentYear: time.Now().Year(),
+	}
 }
