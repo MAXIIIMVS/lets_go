@@ -10,6 +10,8 @@ import (
 	"github.com/eXvimmer/lets_go/internal/validator"
 )
 
+const authenticatedUserId = "authenticatedUserId"
+
 type snippetCreateForm struct {
 	Title               string `form:"title"`
 	Content             string `form:"content"`
@@ -231,7 +233,7 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
-	app.sessionManager.Put(r.Context(), "authenticatedUserId", id)
+	app.sessionManager.Put(r.Context(), authenticatedUserId, id)
 	http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
 }
 
@@ -241,7 +243,7 @@ func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
-	app.sessionManager.Remove(r.Context(), "authenticatedUserId")
+	app.sessionManager.Remove(r.Context(), authenticatedUserId)
 	app.sessionManager.Put(
 		r.Context(),
 		"flash",
