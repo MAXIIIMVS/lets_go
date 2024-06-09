@@ -1,35 +1,35 @@
-{{ define "title" }}Create a New Snippet{{ end }}
+{{define "title"}}Create a New Snippet{{end}}
 
-{{ define "main" }}
+{{define "main"}}
 <form action="/snippet/create" method="post">
   <div>
     <label for="title">Title:</label>
-    {{ with .Form.FieldErrors.title }}
+    {{with .Form.FieldErrors.title}}
     <label class="error">{{.}}</label>
-    {{ end }}
-    <input type="text" name="title" id="title" value="{{ .Form.Title }}" />
+    {{end}}
+    <input type="text" name="title" id="title" value="{{.Form.Title}}" required />
   </div>
   <div>
     <label for="content">Content:</label>
-    {{ with .Form.FieldErrors.content }}
-    <label class="error">{{ . }}</label>
-    {{ end }}
-    <textarea name="content" id="content">{{ .Form.Content }}</textarea>
+    {{with .Form.FieldErrors.content}}
+    <label class="error">{{.}}</label>
+    {{end}}
+    <textarea name="content" id="content" required>{{.Form.Content}}</textarea>
   </div>
   <div>
     <label>Delete in:</label>
-    {{ with .Form.FieldErrors.expires }}
-    <label class="error">{{ . }}</label>
-    {{ end }}
-    <input type="radio" name="expires" value="365" id="year" {{ if (eq .Form.Expires 365) }}checked{{ end }} /> <label
+    {{with .Form.FieldErrors.expires}}
+    <label class="error">{{.}}</label>
+    {{end}}
+    <input type="radio" name="expires" value="365" id="year" {{if (eq .Form.Expires 365)}}checked{{end}} /> <label
       for="year">One Year</label>
-    <input type="radio" name="expires" value="7" id="week" {{ if (eq .Form.Expires 7) }}checked{{ end }} /> <label
+    <input type="radio" name="expires" value="7" id="week" {{if (eq .Form.Expires 7)}}checked{{end}} /> <label
       for="week">One Week</label>
-    <input type="radio" name="expires" value="1" id="day" {{ if (eq .Form.Expires 1) }}checked{{ end }} /> <label
+    <input type="radio" name="expires" value="1" id="day" {{if (eq .Form.Expires 1)}}checked{{end}} /> <label
       for="day">One Day</label>
   </div>
   <div>
     <input type="submit" value="Publish Snippet" />
   </div>
 </form>
-{{ end }}
+{{end}}

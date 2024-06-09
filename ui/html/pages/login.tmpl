@@ -1,14 +1,10 @@
-{{define "title"}}Sign Up{{end}}
+{{define "title"}}Login{{end}}
 
 {{define "main"}}
-<form action="/user/signup" method="post">
-  <div>
-    <label for="name">Name:</label>
-    {{with .Form.FieldErrors.name}}
-    <label class="error">{{.}}</label>
-    {{end}}
-    <input type="text" name="name" id="name" value="{{.Form.Name}}" required />
-  </div>
+<form action="/user/login" method="post">
+  {{range .Form.NonFieldErrors}}
+  <div class="error">{{.}}</div>
+  {{end}}
   <div>
     <label for="email">Email:</label>
     {{with .Form.FieldErrors.email}}
@@ -21,10 +17,10 @@
     {{with .Form.FieldErrors.password}}
     <label class="error">{{.}}</label>
     {{end}}
-    <input type="password" name="password" id="password" required />
+    <input type="password" id="password" name="password" required />
   </div>
   <div>
-    <input type="submit" value="Sign Up" />
+    <input type="submit" value="Login" />
   </div>
 </form>
 {{end}}
