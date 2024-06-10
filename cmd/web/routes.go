@@ -13,7 +13,7 @@ func (app *application) routes() http.Handler {
 	mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
 
 	// TODO: create your own middleware functionality and remove alice
-	dynamic := alice.New(app.sessionManager.LoadAndSave)
+	dynamic := alice.New(app.sessionManager.LoadAndSave, noSurf)
 	protected := dynamic.Append(app.requireAuthentication)
 
 	mux.Handle("GET /{$}", dynamic.ThenFunc(app.home))
