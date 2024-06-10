@@ -3,14 +3,15 @@ package main
 import (
 	"net/http"
 
+	"github.com/eXvimmer/lets_go/ui"
 	"github.com/justinas/alice"
 )
 
 func (app *application) routes() http.Handler {
 	mux := http.NewServeMux()
 
-	fileServer := http.FileServer(http.Dir("./ui/static"))
-	mux.Handle("GET /static/", http.StripPrefix("/static", fileServer))
+	fileServer := http.FileServer(http.FS(ui.Files))
+	mux.Handle("GET /static/", fileServer)
 
 	// TODO: create your own middleware functionality and remove alice
 	dynamic := alice.New(
