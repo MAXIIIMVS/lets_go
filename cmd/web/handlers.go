@@ -11,6 +11,7 @@ import (
 )
 
 const authenticatedUserId = "authenticatedUserId"
+const redirectPathAfterLogin = "redirectPathAfterLogin"
 
 type snippetCreateForm struct {
 	Title               string `form:"title"`
@@ -234,6 +235,11 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	app.sessionManager.Put(r.Context(), authenticatedUserId, id)
+	path := app.sessionManager.PopString(r.Context(), redirectPathAfterLogin)
+	if path != "" {
+		http.Redirect(w, r, path, http.StatusSeeOther)
+		return
+	}
 	http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
 }
 
