@@ -3,7 +3,7 @@ package mocks
 import (
 	"time"
 
-	"github.com/eXvimmer/lets_go/internal/models"
+	"github.com/MAXIIIMVS/lets_go/internal/models"
 )
 
 var mockSnippet = &models.Snippet{

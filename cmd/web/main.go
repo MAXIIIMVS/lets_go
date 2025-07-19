@@ -10,9 +10,9 @@ import (
 	"os"
 	"time"
 
+	"github.com/MAXIIIMVS/lets_go/internal/models"
 	"github.com/alexedwards/scs/mysqlstore"
 	"github.com/alexedwards/scs/v2"
-	"github.com/eXvimmer/lets_go/internal/models"
 	"github.com/go-playground/form/v4"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"

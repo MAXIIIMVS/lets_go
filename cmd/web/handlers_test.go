@@ -5,7 +5,7 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/eXvimmer/lets_go/internal/assert"
+	"github.com/MAXIIIMVS/lets_go/internal/assert"
 )
 
 func TestPing(t *testing.T) {

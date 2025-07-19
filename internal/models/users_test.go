@@ -3,7 +3,7 @@ package models
 import (
 	"testing"
 
-	"github.com/eXvimmer/lets_go/internal/assert"
+	"github.com/MAXIIIMVS/lets_go/internal/assert"
 )
 
 func TestUserModelExists(t *testing.T) {

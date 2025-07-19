@@ -1,6 +1,6 @@
-module github.com/eXvimmer/lets_go
+module github.com/MAXIIIMVS/lets_go
 
-go 1.22.1
+go 1.24.0
 
 require (
 	github.com/alexedwards/scs/mysqlstore v0.0.0-20240316134038-7e11d57e8885

@@ -2,3 +2,4 @@ tags
 tmp/
 .env
 tls/
+Session.vim

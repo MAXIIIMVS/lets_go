@@ -1,3 +1,3 @@
 # Let's Go
 
-This version uses `go 1.22` routing features.
+This version uses `go 1.24` routing features.

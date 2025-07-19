@@ -6,12 +6,14 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/eXvimmer/lets_go/internal/models"
-	"github.com/eXvimmer/lets_go/internal/validator"
+	"github.com/MAXIIIMVS/lets_go/internal/models"
+	"github.com/MAXIIIMVS/lets_go/internal/validator"
 )
 
-const authenticatedUserId = "authenticatedUserId"
-const redirectPathAfterLogin = "redirectPathAfterLogin"
+const (
+	authenticatedUserID    = "authenticatedUserId"
+	redirectPathAfterLogin = "redirectPathAfterLogin"
+)
 
 type snippetCreateForm struct {
 	Title               string `form:"title"`
@@ -241,7 +243,7 @@ func (app *application) userLoginPost(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
-	app.sessionManager.Put(r.Context(), authenticatedUserId, id)
+	app.sessionManager.Put(r.Context(), authenticatedUserID, id)
 	path := app.sessionManager.PopString(r.Context(), redirectPathAfterLogin)
 	if path != "" {
 		http.Redirect(w, r, path, http.StatusSeeOther)
@@ -256,7 +258,7 @@ func (app *application) userLogoutPost(w http.ResponseWriter, r *http.Request) {
 		app.serverError(w, err)
 		return
 	}
-	app.sessionManager.Remove(r.Context(), authenticatedUserId)
+	app.sessionManager.Remove(r.Context(), authenticatedUserID)
 	app.sessionManager.Put(
 		r.Context(),
 		"flash",
@@ -274,8 +276,8 @@ func (app *application) aboutView(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *application) accountView(w http.ResponseWriter, r *http.Request) {
-	userId := app.sessionManager.GetInt(r.Context(), authenticatedUserId)
-	user, err := app.users.Get(userId)
+	userID := app.sessionManager.GetInt(r.Context(), authenticatedUserID)
+	user, err := app.users.Get(userID)
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
 			http.Redirect(w, r, "/user/login", http.StatusSeeOther)
@@ -333,8 +335,8 @@ func (app *application) accountPasswordUpdatePost(w http.ResponseWriter, r *http
 		app.render(w, http.StatusUnprocessableEntity, "password.tmpl", data)
 		return
 	}
-	userId := app.sessionManager.GetInt(r.Context(), authenticatedUserId)
-	err = app.users.PasswordUpdate(userId, form.CurrentPassword, form.NewPassword)
+	userID := app.sessionManager.GetInt(r.Context(), authenticatedUserID)
+	err = app.users.PasswordUpdate(userID, form.CurrentPassword, form.NewPassword)
 	if err != nil {
 		if errors.Is(err, models.ErrInvalidCredentials) {
 			form.AddFieldError("currentPassword", "Current password is incorrect")

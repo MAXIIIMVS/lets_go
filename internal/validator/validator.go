@@ -2,6 +2,7 @@ package validator
 
 import (
 	"regexp"
+	"slices"
 	"strings"
 	"unicode/utf8"
 )
@@ -48,12 +49,7 @@ func MaxChars(value string, n int) bool {
 }
 
 func PermittedValue[T comparable](value T, permittedValues ...T) bool {
-	for _, v := range permittedValues {
-		if value == v {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(permittedValues, value)
 }
 
 func MinChars(value string, n int) bool {

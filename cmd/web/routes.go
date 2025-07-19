@@ -3,7 +3,7 @@ package main
 import (
 	"net/http"
 
-	"github.com/eXvimmer/lets_go/ui"
+	"github.com/MAXIIIMVS/lets_go/ui"
 	"github.com/justinas/alice"
 )
 

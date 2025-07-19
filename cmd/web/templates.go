@@ -6,8 +6,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"github.com/eXvimmer/lets_go/internal/models"
-	"github.com/eXvimmer/lets_go/ui"
+	"github.com/MAXIIIMVS/lets_go/internal/models"
+	"github.com/MAXIIIMVS/lets_go/ui"
 )
 
 type templateData struct {

@@ -13,8 +13,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/MAXIIIMVS/lets_go/internal/models/mocks"
 	"github.com/alexedwards/scs/v2"
-	"github.com/eXvimmer/lets_go/internal/models/mocks"
 	"github.com/go-playground/form/v4"
 )
 

@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/eXvimmer/lets_go/internal/assert"
+	"github.com/MAXIIIMVS/lets_go/internal/assert"
 )
 
 func TestHumanDate(t *testing.T) {
