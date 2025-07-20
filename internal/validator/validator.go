@@ -13,8 +13,8 @@ var EmailRX = regexp.MustCompile(
 )
 
 type Validator struct {
-	NonFieldErrors []string
 	FieldErrors    map[string]string
+	NonFieldErrors []string
 }
 
 func (v *Validator) Valid() bool {

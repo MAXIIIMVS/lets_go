@@ -11,13 +11,13 @@ import (
 )
 
 type templateData struct {
+	CSRFToken       string
 	CurrentYear     int
+	Flash           string
+	Form            any
+	IsAuthenticated bool
 	Snippet         *models.Snippet
 	Snippets        []*models.Snippet
-	Form            any
-	Flash           string
-	IsAuthenticated bool
-	CSRFToken       string
 	User            *models.User
 }
 

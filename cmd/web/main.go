@@ -4,8 +4,10 @@ import (
 	"crypto/tls"
 	"database/sql"
 	"flag"
+	"fmt"
 	"html/template"
 	"log"
+	"log/slog"
 	"net/http"
 	"os"
 	"time"
@@ -20,13 +22,12 @@ import (
 
 type application struct {
 	debug          bool
-	errorLog       *log.Logger
-	infoLog        *log.Logger
-	snippets       models.SnippetModelInterface
-	users          models.UserModelInterface
-	templateCache  map[string]*template.Template
 	formDecoder    *form.Decoder
+	logger         *slog.Logger
 	sessionManager *scs.SessionManager
+	snippets       models.SnippetModelInterface
+	templateCache  map[string]*template.Template
+	users          models.UserModelInterface
 }
 
 func main() {
@@ -54,22 +55,22 @@ func main() {
 	debug := flag.Bool("debug", false, "Enable debug mode")
 	flag.Parse()
 
-	infoLog := log.New(os.Stdout, "INFO:\t", log.Ldate|log.Ltime)
-	errorLog := log.New(
-		os.Stderr,
-		"ERROR:\t",
-		log.Ldate|log.Ltime|log.Lshortfile,
-	)
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+		Level: slog.LevelDebug,
+		// AddSource: true,
+	}))
 
 	db, err := openDB(*dsn)
 	if err != nil {
-		errorLog.Fatal(err)
+		logger.Error(err.Error())
+		os.Exit(1)
 	}
 	defer db.Close()
 
 	templateCache, err := newTemplateCache()
 	if err != nil {
-		errorLog.Fatal(err)
+		logger.Error(err.Error())
+		os.Exit(1)
 	}
 
 	formDecoder := form.NewDecoder()
@@ -81,13 +82,12 @@ func main() {
 
 	app := application{
 		debug:          *debug,
-		errorLog:       errorLog,
-		infoLog:        infoLog,
-		snippets:       &models.SnippetModel{DB: db},
-		users:          &models.UserModel{DB: db},
-		templateCache:  templateCache,
 		formDecoder:    formDecoder,
+		logger:         logger,
 		sessionManager: sessionManager,
+		snippets:       &models.SnippetModel{DB: db},
+		templateCache:  templateCache,
+		users:          &models.UserModel{DB: db},
 	}
 
 	tlsConfig := &tls.Config{
@@ -95,18 +95,23 @@ func main() {
 	}
 
 	srv := &http.Server{
-		Addr:         *addr,
-		ErrorLog:     errorLog,
+		Addr: *addr,
+		ErrorLog: log.New(
+			os.Stderr,
+			"ERROR:\t",
+			log.Ldate|log.Ltime|log.Lshortfile,
+		),
 		Handler:      app.routes(),
-		TLSConfig:    tlsConfig,
 		IdleTimeout:  time.Minute,
 		ReadTimeout:  5 * time.Second,
+		TLSConfig:    tlsConfig,
 		WriteTimeout: 10 * time.Second,
 	}
 
-	infoLog.Printf("Starting server on https://%s%s\n", "localhost", *addr)
+	logger.Info(fmt.Sprintf("Starting server on https://%s%s\n", "localhost", *addr))
 	err = srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
-	errorLog.Fatal(err)
+	logger.Error(err.Error())
+	os.Exit(1)
 }
 
 func openDB(dsn string) (*sql.DB, error) {

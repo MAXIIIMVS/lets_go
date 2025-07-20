@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"html"
 	"io"
-	"log"
+	"log/slog"
 	"net/http"
 	"net/http/cookiejar"
 	"net/http/httptest"
@@ -33,8 +33,7 @@ func newTestApplication(t *testing.T) *application {
 	sessionManager.Cookie.Secure = true
 
 	return &application{
-		errorLog:       log.New(io.Discard, "", 0),
-		infoLog:        log.New(io.Discard, "", 0),
+		logger:         slog.New(slog.NewJSONHandler(io.Discard, nil)),
 		snippets:       &mocks.SnippetModel{},
 		users:          &mocks.UserModel{},
 		templateCache:  templateCache,

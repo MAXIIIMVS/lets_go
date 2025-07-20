@@ -16,15 +16,15 @@ const (
 )
 
 type snippetCreateForm struct {
-	Title               string `form:"title"`
 	Content             string `form:"content"`
 	Expires             int    `form:"expires"`
+	Title               string `form:"title"`
 	validator.Validator `form:"-"`
 }
 
 type userSignupForm struct {
-	Name                string `form:"name"`
 	Email               string `form:"email"`
+	Name                string `form:"name"`
 	Password            string `form:"password"`
 	validator.Validator `form:"-"`
 }

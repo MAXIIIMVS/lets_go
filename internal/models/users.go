@@ -19,11 +19,11 @@ type UserModelInterface interface {
 }
 
 type User struct {
-	ID             int
-	Name           string
+	Created        time.Time
 	Email          string
 	HashedPassowrd []byte
-	Created        time.Time
+	ID             int
+	Name           string
 }
 
 type UserModel struct {
@@ -98,6 +98,7 @@ func (m *UserModel) Exists(id int) (bool, error) {
 	err := m.DB.QueryRow(stmt, id).Scan(&exists)
 	return exists, err
 }
+
 func (m *UserModel) PasswordUpdate(id int, currentPassword, newPassword string) error {
 	var currentHashedPasswrod []byte
 	stmt := `SELECT hashed_password FROM users WHERE id = ?;`
