@@ -65,6 +65,7 @@ func main() {
 		logger.Error(err.Error())
 		os.Exit(1)
 	}
+	logger.Info("✅ Connected to database")
 	defer db.Close()
 
 	templateCache, err := newTemplateCache()
@@ -108,7 +109,7 @@ func main() {
 		WriteTimeout: 10 * time.Second,
 	}
 
-	logger.Info(fmt.Sprintf("Starting server on https://%s%s\n", "localhost", *addr))
+	logger.Info(fmt.Sprintf("✅ Starting server on https://%s%s\n", "localhost", *addr))
 	err = srv.ListenAndServeTLS("./tls/cert.pem", "./tls/key.pem")
 	logger.Error(err.Error())
 	os.Exit(1)
